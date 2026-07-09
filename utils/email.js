@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import "./debug-brevo.js";
 
 const require = createRequire(import.meta.url);
 
