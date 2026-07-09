@@ -1,8 +1,12 @@
-import * as brevo from "@getbrevo/brevo";
+import {
+  TransactionalEmailsApi,
+  TransactionalEmailsApiApiKeys,
+  SendSmtpEmail,
+} from "@getbrevo/brevo";
 
-const apiInstance = new brevo.TransactionalEmailsApi();
+const apiInstance = new TransactionalEmailsApi();
 apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY
 );
 
@@ -13,7 +17,7 @@ const FROM_NAME = process.env.EMAIL_FROM_NAME || "Elay Trading";
  * Send email verification code
  */
 export const sendVerificationEmail = async (email, name, code) => {
-  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  const sendSmtpEmail = new SendSmtpEmail();
 
   sendSmtpEmail.sender = { email: FROM_EMAIL, name: FROM_NAME };
   sendSmtpEmail.to = [{ email, name }];
@@ -46,7 +50,7 @@ export const sendVerificationEmail = async (email, name, code) => {
  * Send welcome email after successful verification
  */
 export const sendWelcomeEmail = async (email, name) => {
-  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  const sendSmtpEmail = new SendSmtpEmail();
 
   sendSmtpEmail.sender = { email: FROM_EMAIL, name: FROM_NAME };
   sendSmtpEmail.to = [{ email, name }];
