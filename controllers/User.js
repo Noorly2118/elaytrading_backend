@@ -13,9 +13,9 @@ const generateVerificationCode = () => {
 // Helper to log email config (useful for debugging)
 const logEmailConfig = () => {
   console.log("[EMAIL CONFIG]", {
-    service: "gmail",
-    user: process.env.EMAIL_USER ? "✓ SET" : "✗ MISSING",
-    password: process.env.EMAIL_PASSWORD ? "✓ SET" : "✗ MISSING",  // Fixed: EMAIL_PASSWORD
+    provider: "resend",
+    api_key: process.env.RESEND_API_KEY ? "✓ SET" : "✗ MISSING",
+    from: process.env.EMAIL_FROM || "using default (onboarding@resend.dev)",
     frontend_url: process.env.FRONTEND_URL || "✗ MISSING",
   });
 };

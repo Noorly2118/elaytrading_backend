@@ -20,8 +20,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
     "multer": "^2.2.0",
-    "nodemailer": "^8.0.1",
     "nodemon": "^3.1.11",
+    "resend": "^6.17.2",
     "xlsx": "^0.18.5"
   }
 }
