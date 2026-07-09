@@ -1,109 +1,275 @@
-import Brevo from "@getbrevo/brevo";
+import { createRequire } from "module";
 
-const client = new Brevo({
-  apiKey: process.env.BREVO_API_KEY,
-});
+const require = createRequire(import.meta.url);
 
-const FROM_EMAIL = process.env.EMAIL_FROM_ADDRESS;
-const FROM_NAME = process.env.EMAIL_FROM_NAME || "Elay Trading";
+const brevo = require("@getbrevo/brevo");
+
+const {
+  TransactionalEmailsApi,
+  TransactionalEmailsApiApiKeys,
+  SendSmtpEmail,
+} = brevo;
 
 
-export const sendVerificationEmail = async (email, name, code) => {
+// ===============================
+// Brevo Configuration
+// ===============================
+
+const apiInstance = new TransactionalEmailsApi();
+
+apiInstance.setApiKey(
+  TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
+
+
+const FROM_EMAIL =
+  process.env.EMAIL_FROM_ADDRESS || "noorly21118@gmail.com";
+
+const FROM_NAME =
+  process.env.EMAIL_FROM_NAME || "Elay Trading";
+
+
+// ===============================
+// Send Verification Email
+// ===============================
+
+export const sendVerificationEmail = async (
+  email,
+  name,
+  code
+) => {
 
   try {
 
-    const response = await client.transactionalEmails.sendTransacEmail({
-      sender: {
-        email: FROM_EMAIL,
-        name: FROM_NAME,
+    const sendSmtpEmail = new SendSmtpEmail();
+
+
+    sendSmtpEmail.sender = {
+      email: FROM_EMAIL,
+      name: FROM_NAME,
+    };
+
+
+    sendSmtpEmail.to = [
+      {
+        email,
+        name,
       },
+    ];
 
-      to: [
-        {
-          email,
-          name,
-        }
-      ],
 
-      subject: "Verify Your Email - Elay Trading",
+    sendSmtpEmail.subject =
+      "Verify Your Email - Elay Trading";
 
-      htmlContent: `
-        <h2>Elay Trading</h2>
 
-        <p>Hello ${name}</p>
+    sendSmtpEmail.htmlContent = `
+      <div style="
+        font-family: Arial, sans-serif;
+        max-width:600px;
+        margin:auto;
+        padding:20px;
+        border:1px solid #ddd;
+        border-radius:10px;
+      ">
 
-        <p>Your verification code:</p>
+        <h2 style="color:#1e3c72;text-align:center;">
+          Elay Trading
+        </h2>
 
-        <h1>${code}</h1>
 
-        <p>This code expires in 10 minutes.</p>
-      `
-    });
+        <h3>Hello ${name}</h3>
+
+
+        <p>
+          Your verification code is:
+        </p>
+
+
+        <div style="
+          background:#1e3c72;
+          color:white;
+          padding:15px;
+          text-align:center;
+          font-size:32px;
+          letter-spacing:8px;
+          border-radius:8px;
+        ">
+          ${code}
+        </div>
+
+
+        <p>
+          This code expires in 10 minutes.
+        </p>
+
+
+        <p>
+          If you did not request this account,
+          ignore this email.
+        </p>
+
+
+      </div>
+    `;
+
+
+    const response =
+      await apiInstance.sendTransacEmail(
+        sendSmtpEmail
+      );
 
 
     console.log(
-      "Verification email sent:",
+      `✅ Verification email sent to ${email}`,
       response
     );
+
 
     return response;
 
 
-  } catch(error){
+  } catch (error) {
+
 
     console.error(
-      "Brevo email error:",
-      error.response?.body || error.message
+      "❌ Verification email failed:",
+      error.response?.body ||
+      error.message
     );
 
+
     throw error;
+
   }
 
 };
 
 
 
-export const sendWelcomeEmail = async(email,name)=>{
+// ===============================
+// Send Welcome Email
+// ===============================
 
-try{
-
-const response =
-await client.transactionalEmails.sendTransacEmail({
-
-sender:{
-email:FROM_EMAIL,
-name:FROM_NAME
-},
-
-to:[
-{
-email,
-name
-}
-],
-
-subject:"Welcome to Elay Trading",
-
-htmlContent:`
-<h2>Welcome ${name}</h2>
-<p>Your account is verified successfully.</p>
-`
-
-});
+export const sendWelcomeEmail = async (
+  email,
+  name
+) => {
 
 
-return response;
+  try {
 
 
-}catch(error){
+    const sendSmtpEmail =
+      new SendSmtpEmail();
 
-console.error(
-"Welcome email error:",
-error.response?.body || error.message
-);
 
-throw error;
 
-}
+    sendSmtpEmail.sender = {
+      email: FROM_EMAIL,
+      name: FROM_NAME,
+    };
+
+
+
+    sendSmtpEmail.to = [
+      {
+        email,
+        name,
+      },
+    ];
+
+
+
+    sendSmtpEmail.subject =
+      "Welcome to Elay Trading 🎉";
+
+
+
+    sendSmtpEmail.htmlContent = `
+
+      <div style="
+        font-family:Arial;
+        max-width:600px;
+        margin:auto;
+        padding:20px;
+      ">
+
+
+        <h2>
+          Welcome ${name}
+        </h2>
+
+
+        <p>
+          Your email has been successfully verified.
+        </p>
+
+
+        <p>
+          You can now login to your Elay Trading account.
+        </p>
+
+
+      </div>
+
+    `;
+
+
+
+    const response =
+      await apiInstance.sendTransacEmail(
+        sendSmtpEmail
+      );
+
+
+    console.log(
+      `✅ Welcome email sent to ${email}`,
+      response
+    );
+
+
+    return response;
+
+
+
+  } catch(error){
+
+
+    console.error(
+      "❌ Welcome email failed:",
+      error.response?.body ||
+      error.message
+    );
+
+
+    throw error;
+
+  }
+
+};
+
+
+
+// ===============================
+// Email Configuration Check
+// ===============================
+
+export const testEmailConfig = () => {
+
+  return {
+
+    provider:"Brevo",
+
+    apiKey:
+      process.env.BREVO_API_KEY
+      ? "✓ SET"
+      : "✗ Missing",
+
+
+    sender:
+      `${FROM_NAME} <${FROM_EMAIL}>`
+
+  };
 
 };
