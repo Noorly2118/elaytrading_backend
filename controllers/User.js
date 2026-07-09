@@ -13,9 +13,10 @@ const generateVerificationCode = () => {
 // Helper to log email config (useful for debugging)
 const logEmailConfig = () => {
   console.log("[EMAIL CONFIG]", {
-    provider: "resend",
-    api_key: process.env.RESEND_API_KEY ? "✓ SET" : "✗ MISSING",
-    from: process.env.EMAIL_FROM || "using default (onboarding@resend.dev)",
+    provider: "brevo",
+    api_key: process.env.BREVO_API_KEY ? "✓ SET" : "✗ MISSING",
+    from_email: process.env.EMAIL_FROM_ADDRESS || "✗ MISSING",
+    from_name: process.env.EMAIL_FROM_NAME || "Elay Trading",
     frontend_url: process.env.FRONTEND_URL || "✗ MISSING",
   });
 };
