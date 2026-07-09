@@ -1,8 +1,8 @@
-import {
-  TransactionalEmailsApi,
-  TransactionalEmailsApiApiKeys,
-  SendSmtpEmail,
-} from "@getbrevo/brevo";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const brevo = require("@getbrevo/brevo");
+
+const { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail } = brevo;
 
 const apiInstance = new TransactionalEmailsApi();
 apiInstance.setApiKey(
