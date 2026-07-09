@@ -1,15 +1,30 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
+import dns from "node:dns";
 
-// Create transporter with your Gmail + App Password
+
+dns.setDefaultResultOrder("ipv4first");
+
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true, 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
   },
-});
+  family: 4,
+ });
+
+// // Create transporter with your Gmail + App Password
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASSWORD,
+//   },
+// });
 
 // Verify transporter connection on startup
 transporter.verify((error, success) => {
