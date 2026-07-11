@@ -51,9 +51,8 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        user.firstName = req.body.firstName || user.firstName;
-        user.lastName = req.body.lastName || user.lastName;
-        user.phone = req.body.phone || user.phone;
+       user.name = req.body.name || user.name;
+user.phone = req.body.phone || user.phone;
 
         user.shippingAddress = {
             country:
