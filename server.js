@@ -14,6 +14,7 @@ import MyorderRoutes from "./routes/MyOrders.js";
 import paymentRoutes from "./routes/paymentRoutes.js"
 import adminUserRoutes from "./routes/adminUserRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 
 
@@ -93,6 +94,8 @@ app.use("/api/myorders", MyorderRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use("/api/admin/users", adminUserRoutes);
+
+app.use("/api/profile", profileRoutes);
 // ────────────────────────────────────────────────
 // Start server + database connection
 const startServer = async () => {

@@ -9,6 +9,29 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
     verificationExpires: { type: Date },
+    phone: {
+    type: String,
+    default: "",
+},
+
+shippingAddress: {
+    country: {
+        type: String,
+        default: "Ethiopia",
+    },
+    city: {
+        type: String,
+        default: "",
+    },
+    region: {
+        type: String,
+        default: "",
+    },
+    address: {
+        type: String,
+        default: "",
+    },
+},
   },
   { timestamps: true }
 );
