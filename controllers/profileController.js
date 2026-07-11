@@ -119,12 +119,9 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        const salt = await bcrypt.genSalt(10);
+        user.password = newPassword;
 
-        user.password = await bcrypt.hash(
-            newPassword,
-            salt
-        );
+await user.save();
 
         await user.save();
 
